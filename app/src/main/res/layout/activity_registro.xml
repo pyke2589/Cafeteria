@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5EE"
+    android:padding="32dp">
+
+    <!-- Logo secundario de la aplicación -->
+    <ImageView
+        android:id="@+id/logo_registro"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logocoffeespot2"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Campo de Nombre -->
+    <EditText
+        android:id="@+id/input_nombre_registro"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="#EFEBE9"
+        android:hint="Nombre completo"
+        android:inputType="textPersonName"
+        android:padding="12dp"
+        android:textColor="#5D4037"
+        app:layout_constraintTop_toBottomOf="@+id/logo_registro" />
+
+    <!-- Campo de Correo -->
+    <EditText
+        android:id="@+id/input_correo_registro"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#EFEBE9"
+        android:hint="Correo electrónico"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:textColor="#5D4037"
+        app:layout_constraintTop_toBottomOf="@+id/input_nombre_registro" />
+
+    <!-- Campo de Contraseña -->
+    <EditText
+        android:id="@+id/input_contrasena_registro"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#EFEBE9"
+        android:hint="Crea una contraseña"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColor="#5D4037"
+        app:layout_constraintTop_toBottomOf="@+id/input_correo_registro" />
+
+    <!-- Botón para Registrarse -->
+    <Button
+        android:id="@+id/btn_registrar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#8D6E63"
+        android:onClick="completarRegistro"
+        android:text="Registrar cuenta"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/input_contrasena_registro" />
+
+    <!-- Texto para volver al Login -->
+    <TextView
+        android:id="@+id/btn_volver_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="¿Ya tienes cuenta? Inicia sesión"
+        android:textColor="#5D4037"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:onClick="volverLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_registrar" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre completo"
+        app:layout_constraintBottom_toTopOf="@+id/input_nombre_registro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.984" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correo electronico"
+        app:layout_constraintBottom_toTopOf="@+id/input_correo_registro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_nombre_registro"
+        app:layout_constraintVertical_bias="0.387" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contraseña"
+        app:layout_constraintBottom_toTopOf="@+id/input_contrasena_registro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_correo_registro" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
