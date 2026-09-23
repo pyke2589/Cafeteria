@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    // Agrega esta línea justo aquí:
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -32,6 +34,9 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
     implementation(libs.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)

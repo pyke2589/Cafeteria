@@ -1,101 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5EE"
+    android:background="#FAF5EB"
     android:padding="32dp">
 
-    <!-- Logo de la aplicación -->
-
-    <!-- Campo de Correo Electrónico -->
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contraseña"
-        app:layout_constraintBottom_toTopOf="@+id/input_contrasena"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_correo"
-        app:layout_constraintVertical_bias="0.0" />
-
+    <!-- Logo central -->
     <ImageView
         android:id="@+id/logo_app"
-        android:layout_width="311dp"
-        android:layout_height="267dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/logocoffeespot"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Fondo café para la mitad inferior -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:background="#8D6E63"
+        app:layout_constraintTop_toBottomOf="@+id/logo_app"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Etiqueta Correo -->
+    <TextView
+        android:id="@+id/lbl_correo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correo"
+        android:textColor="#3E2723"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_app" />
 
     <EditText
         android:id="@+id/input_correo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
-        android:background="#EFEBE9"
-        android:hint="Correo electrónico"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:hint="michael@gmail.com"
         android:inputType="textEmailAddress"
-        android:padding="12dp"
-        android:textColor="#5D4037"
-        app:layout_constraintTop_toBottomOf="@+id/logo_app" />
+        android:textColor="#FFFFFF"
+        android:textColorHint="#D7CCC8"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_correo" />
 
-    <!-- Campo de Contraseña -->
+    <!-- Etiqueta Contraseña -->
+    <TextView
+        android:id="@+id/lbl_contrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contraseña"
+        android:textColor="#3E2723"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_correo" />
+
+    <!-- Campo Contraseña redondeado CORREGIDO -->
     <EditText
         android:id="@+id/input_contrasena"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:background="#EFEBE9"
-        android:hint="Contraseña"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/fondo_redondeado_crema"
+        android:hint=".........."
         android:inputType="textPassword"
-        android:padding="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="48dp"
         android:textColor="#5D4037"
-        app:layout_constraintTop_toBottomOf="@+id/input_correo" />
+        app:layout_constraintTop_toBottomOf="@+id/lbl_contrasena" />
 
-    <!-- Botón de Ingresar -->
+    <!-- Botón Iniciar Sesión -->
     <Button
         android:id="@+id/btn_ingresar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#5D4037"
+        android:backgroundTint="#F5E6CC"
         android:onClick="ingresarApp"
         android:text="Iniciar Sesion"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/input_contrasena"
-        tools:layout_editor_absoluteX="32dp" />
+        android:textColor="#3E2723"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_contrasena" />
 
-    <!-- Botón de Crear Cuenta -->
-    <TextView
+    <!-- Botón Crear Cuenta -->
+    <Button
         android:id="@+id/btn_crear_cuenta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="¿No tienes cuenta? Crea una aquí"
-        android:textColor="#8D6E63"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#F5E6CC"
         android:onClick="crearCuenta"
+        android:text="Crear Cuenta"
+        android:textColor="#3E2723"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_ingresar" />
 
-    <TextView
-        android:id="@+id/textView"
+    <!-- BOTÓN TEMPORAL PARA SUBIR DATOS -->
+    <Button
+        android:id="@+id/btn_subir_datos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Correo electronico"
-        app:layout_constraintBottom_toTopOf="@+id/input_correo"
+        android:text="SUBIR EXCEL"
+        android:backgroundTint="#FF0000"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="-1dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

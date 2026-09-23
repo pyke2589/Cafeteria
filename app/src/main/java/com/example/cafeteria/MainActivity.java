@@ -3,37 +3,61 @@ package com.example.cafeteria;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    EditText cajaCorreo, cajaPass;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.logo_app), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // 1. Inicializamos Firebase y la Autenticación
+        FirebaseApp.initializeApp(this);
+        mAuth = FirebaseAuth.getInstance();
+
+        // 2. Conectamos con los IDs exactos de tu activity_main.xml
+        cajaCorreo = findViewById(R.id.input_correo);
+        cajaPass = findViewById(R.id.input_contrasena);
     }
 
-    public void ingresarApp (View view){
-        Intent obj = new Intent(this, Pantalla2.class);
-        this.startActivity(obj);
-        this.finish();
+    // Método del botón "Iniciar Sesión"
+    public void ingresarApp(View view) {
+        String correo = cajaCorreo.getText().toString().trim();
+        String pass = cajaPass.getText().toString().trim();
+
+        if (correo.isEmpty() || pass.isEmpty()) {
+            Toast.makeText(this, "Por favor, ingresa tu correo y contraseña", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 3. Validamos en la base de datos de Firebase
+        mAuth.signInWithEmailAndPassword(correo, pass)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(MainActivity.this, "¡Bienvenido a CoffeeSpot!", Toast.LENGTH_SHORT).show();
+
+                        // 4. Te lleva a Pantalla2 (donde está el mapa y la lista)
+                        Intent intent = new Intent(MainActivity.this, Pantalla2.class);
+                        startActivity(intent);
+                        finish(); // Cierra esta pantalla para no volver atrás
+                    } else {
+                        Toast.makeText(MainActivity.this, "Error: Correo o contraseña incorrectos", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
-    public void crearCuenta (View view){
-        Intent intentRegistro = new Intent(this, RegistroActivity.class);
-        this.startActivity(intentRegistro);
+    // Método del botón "Crear Cuenta"
+    public void crearCuenta(View view) {
+        Intent intent = new Intent(this, RegistroActivity.class);
+        startActivity(intent);
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "55375005256",
+    "project_id": "cafeteria-app-6b25f",
+    "storage_bucket": "cafeteria-app-6b25f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55375005256:android:ceb705781c1d3865037a7d",
+        "android_client_info": {
+          "package_name": "com.example.cafeteria"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjd3w-oitRWFAcIOkvOMtM5109qIIw-7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

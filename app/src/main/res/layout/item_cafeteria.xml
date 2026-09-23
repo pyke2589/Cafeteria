@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="#8D6E63"
+    android:padding="12dp">
+
+    <!-- Imagen de la Cafetería -->
+    <ImageView
+        android:id="@+id/img_cafeteria"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="#EFEBE9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nombre de la Cafetería -->
+    <TextView
+        android:id="@+id/txt_nombre_cafe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Cafetería del Bosque"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btn_informacion"
+        app:layout_constraintStart_toEndOf="@+id/img_cafeteria"
+        app:layout_constraintTop_toTopOf="@+id/img_cafeteria" />
+
+    <!-- Corazón y Likes -->
+    <!-- Corazón Interactivo (Botón) -->
+    <TextView
+        android:id="@+id/btn_corazon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="🤍"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/txt_nombre_cafe"
+        app:layout_constraintTop_toBottomOf="@+id/txt_nombre_cafe" />
+
+    <!-- Texto de Cantidad de Likes -->
+    <TextView
+        android:id="@+id/txt_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="15K"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_corazon"
+        app:layout_constraintStart_toEndOf="@+id/btn_corazon"
+        app:layout_constraintTop_toTopOf="@+id/btn_corazon" />
+
+    <!-- Botón Información (Único) -->
+    <TextView
+        android:id="@+id/btn_informacion"
+        android:layout_width="102dp"
+        android:layout_height="35dp"
+        android:background="@drawable/fondo_redondeado_crema"
+        android:backgroundTint="#D7CCC8"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
+        android:text="Información"
+        android:textColor="#3E2723"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
