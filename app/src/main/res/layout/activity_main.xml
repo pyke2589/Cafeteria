@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4C2B1A"
+    android:background="@color/cafe_fondo"
     android:padding="32dp">
 
     <!-- Logo central -->
@@ -22,8 +22,8 @@
         android:id="@+id/lbl_correo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Correo electrónico"
-        android:textColor="#FAF5EB"
+        android:text="@string/lbl_correo"
+        android:textColor="@color/crema_fondo"
         android:textStyle="bold"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,11 +36,11 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/fondo_redondeado_crema"
-        android:backgroundTint="#FAF5EB"
+        android:backgroundTint="@color/crema_fondo"
         android:paddingHorizontal="20dp"
-        android:textColor="#3E2723"
-        android:textColorHint="#8D6E63"
-        android:hint="ejemplo@correo.com"
+        android:textColor="@color/cafe_oscuro_texto"
+        android:textColorHint="@color/cafe_suave"
+        android:hint="@string/hint_correo"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,62 +51,59 @@
         android:id="@+id/lbl_contrasena"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contraseña"
-        android:textColor="#FAF5EB"
+        android:text="@string/lbl_contrasena"
+        android:textColor="@color/crema_fondo"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_correo" />
 
-    <!-- Campo Contraseña redondeado -->
-    <EditText
-        android:id="@+id/input_contrasena"
+    <!-- Campo Contraseña redondeado con toggle de visibilidad (Ojo) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_input_contrasena"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/fondo_redondeado_crema"
-        android:backgroundTint="#FAF5EB"
-        android:paddingHorizontal="20dp"
-        android:textColor="#3E2723"
-        android:textColorHint="#8D6E63"
-        android:hint=".........."
-        android:inputType="textPassword"
+        app:hintEnabled="false"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/cafe_suave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_contrasena" />
+        app:layout_constraintTop_toBottomOf="@+id/lbl_contrasena">
 
-    <!-- Botón Iniciar Sesión -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/fondo_redondeado_crema"
+            android:backgroundTint="@color/crema_fondo"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/cafe_oscuro_texto"
+            android:textColorHint="@color/cafe_suave"
+            android:hint="@string/hint_contrasena"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Botón Iniciar Sesión (Usa el Style centralizado) -->
     <Button
         android:id="@+id/btn_ingresar"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
+        style="@style/EstiloBotonCafe"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#F5E6CC"
         android:onClick="ingresarApp"
-        android:text="Iniciar Sesión"
-        android:textColor="#3E2723"
-        android:textAllCaps="false"
-        android:textStyle="bold"
+        android:text="@string/btn_iniciar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_contrasena" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_input_contrasena" />
 
-    <!-- Botón Crear Cuenta -->
+    <!-- Botón Crear Cuenta (Usa el Style centralizado) -->
     <Button
         android:id="@+id/btn_crear_cuenta"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
+        style="@style/EstiloBotonCafe"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#F5E6CC"
         android:onClick="crearCuenta"
-        android:text="Crear Cuenta"
-        android:textColor="#3E2723"
-        android:textAllCaps="false"
-        android:textStyle="bold"
+        android:text="@string/btn_crear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_ingresar" />
-
-    <!-- BOTÓN TEMPORAL PARA SUBIR DATOS -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

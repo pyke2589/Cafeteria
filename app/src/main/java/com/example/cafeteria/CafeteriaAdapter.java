@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +20,7 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.View
     private List<CafeteriaModelo> listaCafeterias;
     private OnItemClickListener listener;
 
-    // ¡NUEVO! Una lista interna que recordará qué IDs son tus favoritos
+    // Una lista interna que recordará qué IDs son tus favoritos
     private List<String> idFavoritos = new ArrayList<>();
 
     public interface OnItemClickListener {
@@ -32,7 +31,7 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.View
         this.listaCafeterias = listaCafeterias;
         this.listener = listener;
 
-        // ¡EL TRUCO! Escuchamos los favoritos del usuario en vivo
+        // Escuchamos los favoritos del usuario en vivo
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             FirebaseFirestore.getInstance().collection("Usuarios").document(uid).collection("Favoritos")
@@ -88,13 +87,14 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.View
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             // Si NO está en favoritos, lo agregamos. Si ya está, lo borramos.
-            // No necesitamos cambiar el texto manualmente aquí porque el SnapshotListener de arriba lo hará.
             if (!idFavoritos.contains(cafe.getId())) {
                 db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).set(cafe);
-                Toast.makeText(v.getContext(), "Agregado a tus favoritos", Toast.LENGTH_SHORT).show();
+                // MENSAJE PERSONALIZADO DE ÉXITO
+                MensajesCoffee.mostrar(v.getContext(), "Agregado a tus favoritos");
             } else {
                 db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).delete();
-                Toast.makeText(v.getContext(), "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
+                // MENSAJE PERSONALIZADO DE ELIMINACIÓN
+                MensajesCoffee.mostrar(v.getContext(), "Eliminado de favoritos");
             }
         });
     }

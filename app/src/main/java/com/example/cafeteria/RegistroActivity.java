@@ -3,7 +3,6 @@ package com.example.cafeteria;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,12 +46,12 @@ public class RegistroActivity extends AppCompatActivity {
         String passConfText = cajaPassConf.getText().toString().trim();
 
         if (nombreText.isEmpty() || correoText.isEmpty() || passText.isEmpty()) {
-            Toast.makeText(this, "Completa nombre, correo y contraseña", Toast.LENGTH_SHORT).show();
+            MensajesCoffee.mostrar(RegistroActivity.this, "Completa nombre, correo y contraseña");
             return;
         }
 
         if (!passText.equals(passConfText)) {
-            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+            MensajesCoffee.mostrar(RegistroActivity.this, "Las contraseñas no coinciden");
             return;
         }
 
@@ -73,14 +72,15 @@ public class RegistroActivity extends AppCompatActivity {
 
                             db.collection("Usuarios").document(uid).set(usuario)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(RegistroActivity.this, "¡Cuenta guardada exitosamente!", Toast.LENGTH_SHORT).show();
+                                        // MENSAJE PERSONALIZADO DE ÉXITO
+                                        MensajesCoffee.mostrar(RegistroActivity.this, "¡Cuenta guardada exitosamente!");
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(RegistroActivity.this, "Error al guardar perfil: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        MensajesCoffee.mostrar(RegistroActivity.this, "Error al guardar perfil");
                                     });
                         } else {
-                            Toast.makeText(RegistroActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            MensajesCoffee.mostrar(RegistroActivity.this, "Error al crear cuenta");
                         }
                     }
                 });

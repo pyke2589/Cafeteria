@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contenedor_mensaje"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fondo_redondeado_crema"
+    android:backgroundTint="@color/cafe_oscuro_texto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="12dp"
+    android:elevation="4dp">
+
+    <!-- Ícono a la izquierda (Opcional, usando el logo) -->
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/logocoffeespot"
+        android:layout_marginEnd="12dp" />
+
+    <!-- Texto del mensaje -->
+    <TextView
+        android:id="@+id/texto_del_mensaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mensaje de prueba"
+        android:textColor="@color/crema_fondo"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

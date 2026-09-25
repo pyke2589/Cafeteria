@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -44,7 +42,6 @@ public class DetalleCafeteriaFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        // ELEMENTOS UI
         ImageView btnVolver = view.findViewById(R.id.btn_volver_detalle);
         TextView tvNombre = view.findViewById(R.id.txt_detalle_nombre);
         TextView tvDireccion = view.findViewById(R.id.txt_detalle_direccion);
@@ -58,13 +55,9 @@ public class DetalleCafeteriaFragment extends Fragment {
         RecyclerView recycler = view.findViewById(R.id.recycler_comentarios);
         EditText inputComentario = view.findViewById(R.id.input_nuevo_comentario);
         Button btnEnviar = view.findViewById(R.id.btn_enviar_comentario);
-
-        // ELEMENTOS UI (Añadimos el banner)
         ImageView imgBanner = view.findViewById(R.id.img_banner_cafe);
 
-        // CONFIGURAR DATOS
-
-        tvNombre.setText(cafe.getNombre());          // ¡Añade esta línea!
+        tvNombre.setText(cafe.getNombre());
         tvDireccion.setText(cafe.getDireccion());
 
         if (cafe.getImagen() != null && !cafe.getImagen().isEmpty()) {
@@ -74,7 +67,6 @@ public class DetalleCafeteriaFragment extends Fragment {
                     .into(imgBanner);
         }
 
-        // Armamos la descripción con los nuevos datos del Excel
         String detallesCompletos =
                 "🏪 Tipo: " + cafe.getTipo() + " (" + cafe.getCategoria() + ")\n" +
                         "🕒 Horario: " + cafe.getHorario() + "\n" +
@@ -84,18 +76,15 @@ public class DetalleCafeteriaFragment extends Fragment {
 
         tvDescripcion.setText(detallesCompletos);
 
-        // CONFIGURAR RECYCLER COMENTARIOS
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         listaComentarios = new ArrayList<>();
-        adapter = new ComentarioAdapter(listaComentarios);
+        adapter = new ComentarioAdapter(listaComentarios, false); // FALSE indica que estamos en la Cafetería
         recycler.setAdapter(adapter);
 
-        // BOTÓN VOLVER
         btnVolver.setOnClickListener(v -> {
             if (getActivity() != null) getActivity().getSupportFragmentManager().popBackStack();
         });
 
-        // ALTERNAR PESTAÑAS
         int colorActivo = Color.parseColor("#8D6E63");
         int colorInactivo = Color.parseColor("#D7CCC8");
 
@@ -116,46 +105,38 @@ public class DetalleCafeteriaFragment extends Fragment {
             tabInfo.setBackgroundTintList(ColorStateList.valueOf(colorInactivo));
             tabInfo.setTextColor(Color.parseColor("#5D4037"));
         });
-        
-        // CONFIGURAR BOTÓN FAVORITO (Corazón)
-        ImageView btnFavorito = view.findViewById(R.id.btn_favorito_detalle);
-        String uid = FirebaseAuth.getInstance().getCurrentUser() != null ? 
-                     FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
-                     
-        if (uid != null) {
-            // Verificar si ya es favorito al cargar
-            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
-                .get().addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        btnFavorito.setColorFilter(Color.RED); // Está en favoritos
-                    } else {
-                        btnFavorito.setColorFilter(Color.parseColor("#BCAAA4")); // No está en favoritos
-                    }
-                });
 
-            // Acción al hacer clic en el corazón
-            btnFavorito.setOnClickListener(v -> {
-                db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
+        ImageView btnFavorito = view.findViewById(R.id.btn_favorito_detalle);
+        String uid = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+
+        if (uid != null) {
+            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
                     .get().addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            // Ya era favorito -> Lo quitamos
-                            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).delete();
-                            btnFavorito.setColorFilter(Color.parseColor("#BCAAA4"));
-                            Toast.makeText(getContext(), "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // No era favorito -> Lo agregamos
-                            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).set(cafe);
                             btnFavorito.setColorFilter(Color.RED);
-                            Toast.makeText(getContext(), "Agregado a favoritos", Toast.LENGTH_SHORT).show();
+                        } else {
+                            btnFavorito.setColorFilter(Color.parseColor("#BCAAA4"));
                         }
                     });
+
+            btnFavorito.setOnClickListener(v -> {
+                db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
+                        .get().addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).delete();
+                                btnFavorito.setColorFilter(Color.parseColor("#BCAAA4"));
+                                MensajesCoffee.mostrar(getContext(), "Eliminado de favoritos");
+                            } else {
+                                db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).set(cafe);
+                                btnFavorito.setColorFilter(Color.RED);
+                                MensajesCoffee.mostrar(getContext(), "Agregado a tus favoritos ❤️");
+                            }
+                        });
             });
         }
 
-        // CARGAR COMENTARIOS
         cargarComentarios();
 
-        // ENVIAR COMENTARIO
         btnEnviar.setOnClickListener(v -> {
             String texto = inputComentario.getText().toString().trim();
             if (texto.isEmpty()) return;
@@ -167,16 +148,15 @@ public class DetalleCafeteriaFragment extends Fragment {
                 String nombreAutor = documentSnapshot.getString("nombre_completo");
                 if (nombreAutor == null) nombreAutor = "Usuario";
 
-                // 1. Guardamos para la Cafetería (Autor = Tu Nombre)
-                ComentarioModelo comentCafe = new ComentarioModelo(nombreAutor, texto);
+                // Le pasamos el userId y el id de la cafetería para que sepa de quién es
+                ComentarioModelo comentCafe = new ComentarioModelo(nombreAutor, texto, userId, cafe.getId());
                 db.collection("Cafeterias").document(cafe.getId()).collection("Comentarios").add(comentCafe);
 
-                // 2. Guardamos una copia para tu Perfil (Autor = Nombre de la Cafetería)
-                ComentarioModelo comentPerfil = new ComentarioModelo("☕ En: " + cafe.getNombre(), texto);
+                ComentarioModelo comentPerfil = new ComentarioModelo("☕ En: " + cafe.getNombre(), texto, userId, cafe.getId());
                 db.collection("Usuarios").document(userId).collection("MisComentarios").add(comentPerfil);
 
                 inputComentario.setText("");
-                Toast.makeText(getContext(), "Comentario enviado", Toast.LENGTH_SHORT).show();
+                MensajesCoffee.mostrar(getContext(), "¡Comentario enviado!");
             });
         });
 
@@ -184,7 +164,6 @@ public class DetalleCafeteriaFragment extends Fragment {
     }
 
     private void cargarComentarios() {
-        // addSnapshotListener actualiza la lista en vivo si alguien comenta
         db.collection("Cafeterias").document(cafe.getId()).collection("Comentarios")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) return;
@@ -192,6 +171,7 @@ public class DetalleCafeteriaFragment extends Fragment {
                         listaComentarios.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             ComentarioModelo coment = doc.toObject(ComentarioModelo.class);
+                            coment.setIdComentario(doc.getId()); // Guardamos el ID del documento
                             listaComentarios.add(coment);
                         }
                         adapter.notifyDataSetChanged();

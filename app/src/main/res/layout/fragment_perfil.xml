@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5EB">
+    android:background="@color/crema_fondo">
 
     <!-- CABECERA DEL PERFIL -->
     <LinearLayout
         android:id="@+id/header_perfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#3E2723"
+        android:background="@color/cafe_oscuro_texto"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="24dp"
@@ -21,10 +21,10 @@
             android:layout_height="110dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/fondo_redondeado_crema"
-            android:backgroundTint="#8D6E63"
+            android:backgroundTint="@color/cafe_suave"
             android:padding="24dp"
             android:src="@drawable/icono_perfil"
-            app:tint="#FFFFFF" />
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/txt_perfil_nombre"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Cargando..."
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="cargando@correo.com"
-            android:textColor="#D7CCC8"
+            android:textColor="@color/crema_fondo"
             android:textSize="16sp" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Teléfono: ..."
-            android:textColor="#D7CCC8"
+            android:textColor="@color/crema_fondo"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -64,7 +64,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="12dp"
         android:src="@android:drawable/ic_menu_revert"
-        app:tint="#FFFFFF"
+        app:tint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,7 +77,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="12dp"
         android:src="@android:drawable/ic_lock_power_off"
-        app:tint="#E3C9B8"
+        app:tint="@color/crema_boton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,11 +97,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="@drawable/fondo_redondeado_crema"
-            android:backgroundTint="#8D6E63"
+            android:backgroundTint="@color/cafe_suave"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
             android:text="❤️ Mis Favoritos"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:elevation="2dp" />
 
@@ -110,11 +110,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/fondo_redondeado_crema"
-            android:backgroundTint="#D7CCC8"
+            android:backgroundTint="@color/crema_boton"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
             android:text="💬 Mis Comentarios"
-            android:textColor="#5D4037"
+            android:textColor="@color/cafe_claro_texto"
             android:textStyle="bold"
             android:elevation="2dp" />
     </LinearLayout>

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -46,7 +45,6 @@ public class PerfilFragment extends Fragment {
         if (mAuth.getCurrentUser() == null) return view;
         uid = mAuth.getCurrentUser().getUid();
 
-        // ELEMENTOS DE LA UI
         TextView tvNombre = view.findViewById(R.id.txt_perfil_nombre);
         TextView tvCorreo = view.findViewById(R.id.txt_perfil_correo);
         TextView tvTelefono = view.findViewById(R.id.txt_perfil_telefono);
@@ -58,7 +56,6 @@ public class PerfilFragment extends Fragment {
         ImageView btnCerrarSesion = view.findViewById(R.id.btn_cerrar_sesion);
         ImageView btnVolver = view.findViewById(R.id.btn_volver_perfil);
 
-        // 1. DATOS DEL USUARIO
         db.collection("Usuarios").document(uid).get().addOnSuccessListener(document -> {
             if (document.exists()) {
                 tvNombre.setText(document.getString("nombre_completo"));
@@ -67,7 +64,6 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        // 2. CONFIGURAR LISTA DE FAVORITOS
         recyclerFavs.setLayoutManager(new LinearLayoutManager(getContext()));
         listaFavoritos = new ArrayList<>();
         adapterFavoritos = new CafeteriaAdapter(listaFavoritos, cafe -> {
@@ -81,13 +77,11 @@ public class PerfilFragment extends Fragment {
         });
         recyclerFavs.setAdapter(adapterFavoritos);
 
-        // 3. CONFIGURAR LISTA DE COMENTARIOS
         recyclerComent.setLayoutManager(new LinearLayoutManager(getContext()));
         listaComentarios = new ArrayList<>();
-        adapterComentarios = new ComentarioAdapter(listaComentarios);
+        adapterComentarios = new ComentarioAdapter(listaComentarios, true); // TRUE indica que estamos en el Perfil
         recyclerComent.setAdapter(adapterComentarios);
 
-        // 4. DESCARGAR FAVORITOS EN VIVO
         db.collection("Usuarios").document(uid).collection("Favoritos")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) return;
@@ -102,7 +96,6 @@ public class PerfilFragment extends Fragment {
                     }
                 });
 
-        // 5. DESCARGAR COMENTARIOS EN VIVO
         db.collection("Usuarios").document(uid).collection("MisComentarios")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) return;
@@ -110,13 +103,13 @@ public class PerfilFragment extends Fragment {
                         listaComentarios.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             ComentarioModelo coment = doc.toObject(ComentarioModelo.class);
+                            coment.setIdComentario(doc.getId()); // Guardamos el ID del documento
                             listaComentarios.add(coment);
                         }
                         adapterComentarios.notifyDataSetChanged();
                     }
                 });
 
-        // 6. ALTERNAR PESTAÑAS (Visual)
         int colorActivo = Color.parseColor("#8D6E63");
         int colorInactivo = Color.parseColor("#D7CCC8");
 
@@ -138,16 +131,14 @@ public class PerfilFragment extends Fragment {
             tabFavs.setTextColor(Color.parseColor("#5D4037"));
         });
 
-        // 7. CERRAR SESIÓN
         btnCerrarSesion.setOnClickListener(v -> {
             mAuth.signOut();
-            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
+            MensajesCoffee.mostrar(getContext(), "Sesión cerrada");
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
             if (getActivity() != null) getActivity().finish();
         });
 
-        // 8. BOTÓN VOLVER
         btnVolver.setOnClickListener(v -> {
             if (getActivity() != null) {
                 View btnMapa = getActivity().findViewById(R.id.Layoutdos);

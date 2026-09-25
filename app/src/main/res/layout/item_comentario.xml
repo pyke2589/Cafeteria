@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="4dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="#FFFFFF">
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/icono_perfil"
-                app:tint="#8D6E63"
+                app:tint="@color/cafe_suave"
                 android:layout_marginEnd="8dp"/>
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="Nombre Autor"
                 android:textStyle="bold"
-                android:textColor="#5D4037"
+                android:textColor="@color/cafe_claro_texto"
                 android:textSize="16sp"/>
         </LinearLayout>
 
@@ -45,7 +45,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:text="Este es un comentario de prueba..."
-            android:textColor="#3E2723"
+            android:textColor="@color/cafe_oscuro_texto"
             android:textSize="14sp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,9 @@ public class MainActivity extends AppCompatActivity {
     EditText cajaCorreo, cajaPass;
     FirebaseAuth mAuth;
 
+    // Variable para el truco de la pantalla secreta
+    private int contadorToques = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +27,24 @@ public class MainActivity extends AppCompatActivity {
         // 1. Inicializamos Firebase y la Autenticación
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-
-        // TRUCO TEMPORAL: Ejecutar la subida de datos al abrir la app
         //CargadorDatos.subir(this);
 
         // 2. Conectamos con los IDs exactos de tu activity_main.xml
         cajaCorreo = findViewById(R.id.input_correo);
         cajaPass = findViewById(R.id.input_contrasena);
+
+        // 3. TRUCO DE LA PANTALLA SECRETA (Easter Egg)
+        ImageView logoApp = findViewById(R.id.logo_app);
+        logoApp.setOnClickListener(v -> {
+            contadorToques++;
+            if (contadorToques == 10) {
+                // Reiniciamos el contador para la próxima vez
+                contadorToques = 0;
+                // Abrimos la pantalla fantasma
+                Intent intent = new Intent(MainActivity.this, CreadoresActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Método del botón "Iniciar Sesión"
@@ -42,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 3. Validamos en la base de datos de Firebase
+        // 4. Validamos en la base de datos de Firebase
         mAuth.signInWithEmailAndPassword(correo, pass)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "¡Bienvenido a CoffeeSpot!", Toast.LENGTH_SHORT).show();
+                        MensajesCoffee.mostrar(MainActivity.this, "¡Bienvenido a CoffeeSpot!");
 
-                        // 4. Te lleva a Pantalla2 (donde está el mapa y la lista)
+                        // Te lleva a Pantalla2 (donde está el mapa y la lista)
                         Intent intent = new Intent(MainActivity.this, Pantalla2.class);
                         startActivity(intent);
                         finish(); // Cierra esta pantalla para no volver atrás

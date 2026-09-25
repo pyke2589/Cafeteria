@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5EE">
+    android:background="@color/crema_fondo">
 
     <!-- 1. MAPA EN CUADRITO ARRIBA (Con bordes redondeados) -->
     <androidx.cardview.widget.CardView
@@ -31,7 +31,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Recomendadas"
-        android:textColor="#5D4037"
+        android:textColor="@color/cafe_claro_texto"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="Ver todo >"
-        android:textColor="#8D6E63"
+        android:textColor="@color/cafe_suave"
         android:textSize="16sp"
         android:textStyle="bold"
         android:padding="8dp"
