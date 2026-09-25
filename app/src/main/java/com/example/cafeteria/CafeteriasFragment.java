@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +26,13 @@ public class CafeteriasFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private CafeteriaAdapter adapter;
-    private List<CafeteriaModelo> listaCompleta; // Respaldo de todos los datos
-    private List<CafeteriaModelo> listaMostrada; // Datos que se muestran tras filtrar
+    private List<CafeteriaModelo> listaCompleta;
+    private List<CafeteriaModelo> listaMostrada;
     private FirebaseFirestore db;
+
+    // Variables para guardar el estado de los filtros
+    private String categoriaActual = "Cerca"; // Puede ser: Cerca, Populares, Abierto
+    private String tipoActual = "Ambas";      // Puede ser: Ambas, Cafetería, Tostaduría
 
     @Nullable
     @Override
@@ -40,19 +45,13 @@ public class CafeteriasFragment extends Fragment {
         listaCompleta = new ArrayList<>();
         listaMostrada = new ArrayList<>();
 
-        // Instanciamos el adaptador y programamos QUÉ PASA al tocar Información
-        adapter = new CafeteriaAdapter(listaMostrada, new CafeteriaAdapter.OnItemClickListener() {
-            @Override
-            public void onInfoClick(CafeteriaModelo cafe) {
-                // Pasamos TODO el objeto de la cafetería al nuevo fragmento
-                Fragment detalleFragment = new DetalleCafeteriaFragment(cafe);
-
-                if (getActivity() != null) {
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.contenedor_principal, detalleFragment) // Tu ID real
-                            .addToBackStack(null) // Permite volver con la flecha o botón del celular
-                            .commit();
-                }
+        adapter = new CafeteriaAdapter(listaMostrada, cafe -> {
+            Fragment detalleFragment = new DetalleCafeteriaFragment(cafe);
+            if (getActivity() != null) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.contenedor_principal, detalleFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -70,72 +69,106 @@ public class CafeteriasFragment extends Fragment {
         Button btnPopulares = view.findViewById(R.id.btn_populares);
         Button btnAbierto = view.findViewById(R.id.btn_abierto);
         ImageView btnVolver = view.findViewById(R.id.btn_volver_cafeterias);
+        ImageView btnFiltroMenu = view.findViewById(R.id.btn_menu_filtro); // El nuevo botón de 3 rayas
 
-        // Colores en código hexadecimal (puedes ajustarlos a tu gusto)
-        int colorActivo = android.graphics.Color.parseColor("#8D6E63"); // Café oscuro
-        int colorInactivo = android.graphics.Color.parseColor("#D7CCC8"); // Café claro
-        int textoActivo = android.graphics.Color.parseColor("#FFFFFF"); // Blanco
-        int textoInactivo = android.graphics.Color.parseColor("#5D4037"); // Café texto
+        int colorActivo = android.graphics.Color.parseColor("#8D6E63");
+        int colorInactivo = android.graphics.Color.parseColor("#D7CCC8");
+        int textoActivo = android.graphics.Color.parseColor("#FFFFFF");
+        int textoInactivo = android.graphics.Color.parseColor("#5D4037");
 
-        // 1. Botón de Regresar
+        // 1. Botón Volver
         btnVolver.setOnClickListener(v -> {
             if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
-        });
-
-        // 2. Botón Cerca de ti (El predeterminado)
-        btnCerca.setOnClickListener(v -> {
-            // Pintar este botón y despintar los demás
-            btnCerca.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorActivo));
-            btnCerca.setTextColor(textoActivo);
-            btnPopulares.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorInactivo));
-            btnPopulares.setTextColor(textoInactivo);
-            btnAbierto.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorInactivo));
-            btnAbierto.setTextColor(textoInactivo);
-
-            // Filtrar datos
-            listaMostrada.clear();
-            listaMostrada.addAll(listaCompleta);
-            adapter.notifyDataSetChanged();
-        });
-
-        // 3. Botón Populares
-        btnPopulares.setOnClickListener(v -> {
-            // Pintar este botón y despintar los demás
-            btnPopulares.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorActivo));
-            btnPopulares.setTextColor(textoActivo);
-            btnCerca.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorInactivo));
-            btnCerca.setTextColor(textoInactivo);
-            btnAbierto.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorInactivo));
-            btnAbierto.setTextColor(textoInactivo);
-
-            // Filtrar datos
-            listaMostrada.clear();
-            listaMostrada.addAll(listaCompleta);
-            Collections.sort(listaMostrada, (c1, c2) -> Integer.compare(c2.getTotal_likes(), c1.getTotal_likes()));
-            adapter.notifyDataSetChanged();
-        });
-
-        // 4. Botón Abierto
-        btnAbierto.setOnClickListener(v -> {
-            // Pintar este botón y despintar los demás
-            btnAbierto.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorActivo));
-            btnAbierto.setTextColor(textoActivo);
-            btnCerca.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorInactivo));
-            btnCerca.setTextColor(textoInactivo);
-            btnPopulares.setBackgroundTintList(android.content.res.ColorStateList.valueOf(colorInactivo));
-            btnPopulares.setTextColor(textoInactivo);
-
-            // Filtrar datos
-            listaMostrada.clear();
-            for (CafeteriaModelo cafe : listaCompleta) {
-                if (cafe.getCategoria().equalsIgnoreCase("Abierto")) {
-                    listaMostrada.add(cafe);
+                View btnMapa = getActivity().findViewById(R.id.Layoutdos);
+                if (btnMapa != null) {
+                    btnMapa.performClick();
+                } else {
+                    getActivity().onBackPressed();
                 }
             }
-            adapter.notifyDataSetChanged();
         });
+
+        // 2. NUEVO: Menú Desplegable (Hamburguesa)
+        btnFiltroMenu.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(getContext(), v);
+            popup.getMenu().add("Mostrar Ambas");
+            popup.getMenu().add("Solo Cafeterías");
+            popup.getMenu().add("Solo Tostadurías");
+
+            popup.setOnMenuItemClickListener(item -> {
+                String titulo = item.getTitle().toString();
+                if (titulo.equals("Mostrar Ambas")) {
+                    tipoActual = "Ambas";
+                } else if (titulo.equals("Solo Cafeterías")) {
+                    tipoActual = "Cafetería";
+                } else if (titulo.equals("Solo Tostadurías")) {
+                    tipoActual = "Tostaduría";
+                }
+                Toast.makeText(getContext(), "Filtro: " + tipoActual, Toast.LENGTH_SHORT).show();
+                aplicarFiltrosCombinados();
+                return true;
+            });
+            popup.show();
+        });
+
+        // 3. Botón Cerca de ti
+        btnCerca.setOnClickListener(v -> {
+            categoriaActual = "Cerca";
+            actualizarColores(btnCerca, btnPopulares, btnAbierto, colorActivo, colorInactivo, textoActivo, textoInactivo);
+            aplicarFiltrosCombinados();
+        });
+
+        // 4. Botón Populares
+        btnPopulares.setOnClickListener(v -> {
+            categoriaActual = "Populares";
+            actualizarColores(btnPopulares, btnCerca, btnAbierto, colorActivo, colorInactivo, textoActivo, textoInactivo);
+            aplicarFiltrosCombinados();
+        });
+
+        // 5. Botón Abierto
+        btnAbierto.setOnClickListener(v -> {
+            categoriaActual = "Abierto";
+            actualizarColores(btnAbierto, btnCerca, btnPopulares, colorActivo, colorInactivo, textoActivo, textoInactivo);
+            aplicarFiltrosCombinados();
+        });
+    }
+
+    // Método de apoyo para cambiar colores rápidamente
+    private void actualizarColores(Button activo, Button inactivo1, Button inactivo2, int cAct, int cInact, int tAct, int tInact) {
+        activo.setBackgroundTintList(android.content.res.ColorStateList.valueOf(cAct));
+        activo.setTextColor(tAct);
+        inactivo1.setBackgroundTintList(android.content.res.ColorStateList.valueOf(cInact));
+        inactivo1.setTextColor(tInact);
+        inactivo2.setBackgroundTintList(android.content.res.ColorStateList.valueOf(cInact));
+        inactivo2.setTextColor(tInact);
+    }
+
+    // EL CEREBRO DE LOS FILTROS: Mezcla la Categoría con el Tipo
+    private void aplicarFiltrosCombinados() {
+        listaMostrada.clear();
+
+        for (CafeteriaModelo cafe : listaCompleta) {
+            // Evaluamos si pasa el filtro de TIPO (Menú hamburguesa)
+            boolean pasaTipo = tipoActual.equals("Ambas") || (cafe.getTipo() != null && cafe.getTipo().equalsIgnoreCase(tipoActual));
+
+            // Evaluamos si pasa el filtro de CATEGORÍA (Los 3 botones)
+            boolean pasaCat = true;
+            if (categoriaActual.equals("Abierto")) {
+                pasaCat = cafe.getCategoria() != null && cafe.getCategoria().equalsIgnoreCase("Abierto");
+            }
+
+            // Si cumple ambas condiciones, lo añadimos
+            if (pasaTipo && pasaCat) {
+                listaMostrada.add(cafe);
+            }
+        }
+
+        // Si la categoría era "Populares", ordenamos los resultados de mayor a menor Likes
+        if (categoriaActual.equals("Populares")) {
+            Collections.sort(listaMostrada, (c1, c2) -> Integer.compare(c2.getTotal_likes(), c1.getTotal_likes()));
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     private void cargarDatosDeFirebase() {
@@ -144,17 +177,13 @@ public class CafeteriasFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         listaCompleta.clear();
-                        listaMostrada.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             CafeteriaModelo cafe = document.toObject(CafeteriaModelo.class);
-
-                            // ¡CLAVE! Guardamos el ID único de Firebase en nuestra tarjeta
                             cafe.setId(document.getId());
-
                             listaCompleta.add(cafe);
-                            listaMostrada.add(cafe);
                         }
-                        adapter.notifyDataSetChanged();
+                        // Aplicamos los filtros iniciales por defecto (Cerca y Ambas)
+                        aplicarFiltrosCombinados();
                     } else {
                         Log.e("Firebase", "Error obteniendo documentos", task.getException());
                     }

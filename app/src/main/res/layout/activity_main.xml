@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5EB"
+    android:background="#4C2B1A"
     android:padding="32dp">
 
     <!-- Logo central -->
@@ -11,42 +11,39 @@
         android:id="@+id/logo_app"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/logocoffeespot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Fondo café para la mitad inferior -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:background="#8D6E63"
-        app:layout_constraintTop_toBottomOf="@+id/logo_app"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <!-- Etiqueta Correo -->
     <TextView
         android:id="@+id/lbl_correo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Correo"
-        android:textColor="#3E2723"
-        android:layout_marginTop="50dp"
+        android:text="Correo electrónico"
+        android:textColor="#FAF5EB"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_app" />
 
+    <!-- Campo Correo redondeado -->
     <EditText
         android:id="@+id/input_correo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:hint="michael@gmail.com"
+        android:background="@drawable/fondo_redondeado_crema"
+        android:backgroundTint="#FAF5EB"
+        android:paddingHorizontal="20dp"
+        android:textColor="#3E2723"
+        android:textColorHint="#8D6E63"
+        android:hint="ejemplo@correo.com"
         android:inputType="textEmailAddress"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#D7CCC8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_correo" />
 
     <!-- Etiqueta Contraseña -->
@@ -55,23 +52,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contraseña"
-        android:textColor="#3E2723"
-        android:layout_marginTop="20dp"
+        android:textColor="#FAF5EB"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_correo" />
 
-    <!-- Campo Contraseña redondeado CORREGIDO -->
+    <!-- Campo Contraseña redondeado -->
     <EditText
         android:id="@+id/input_contrasena"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/fondo_redondeado_crema"
+        android:backgroundTint="#FAF5EB"
+        android:paddingHorizontal="20dp"
+        android:textColor="#3E2723"
+        android:textColorHint="#8D6E63"
         android:hint=".........."
         android:inputType="textPassword"
-        android:paddingStart="16dp"
-        android:paddingEnd="48dp"
-        android:textColor="#5D4037"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_contrasena" />
 
     <!-- Botón Iniciar Sesión -->
@@ -82,9 +83,10 @@
         android:layout_marginTop="40dp"
         android:backgroundTint="#F5E6CC"
         android:onClick="ingresarApp"
-        android:text="Iniciar Sesion"
+        android:text="Iniciar Sesión"
         android:textColor="#3E2723"
         android:textAllCaps="false"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_contrasena" />
@@ -100,18 +102,11 @@
         android:text="Crear Cuenta"
         android:textColor="#3E2723"
         android:textAllCaps="false"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_ingresar" />
 
     <!-- BOTÓN TEMPORAL PARA SUBIR DATOS -->
-    <Button
-        android:id="@+id/btn_subir_datos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SUBIR EXCEL"
-        android:backgroundTint="#FF0000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

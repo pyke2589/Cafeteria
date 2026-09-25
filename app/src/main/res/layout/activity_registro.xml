@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="#FAF5EB"> <!-- Fondo crema -->
 
     <!-- Botón volver atrás superior izquierdo -->
-    <ImageView
+    <ImageButton
         android:id="@+id/btn_volver_superior"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@android:drawable/ic_menu_revert"
-        android:backgroundTint="#F3A683"
-        android:background="@drawable/logocoffeespot2"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="volverLogin"
+        android:contentDescription="Volver atrás"
+        android:scaleType="centerInside"
+        app:tint="#5D4037"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CoffeeSpot"
-        android:textColor="#5D4037"
-        android:textSize="28sp"
+        android:textColor="#4E342E"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,119 +41,143 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crear Cuenta"
-        android:textColor="#3E2723"
-        android:textSize="20sp"
-        android:layout_marginTop="8dp"
+        android:textColor="#6D4C41"
+        android:textSize="18sp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titulo_coffeespot" />
 
-    <!-- Recuadro Verde Claro con los campos -->
-    <LinearLayout
-        android:id="@+id/contenedor_verde"
+    <!-- Recuadro para los campos (CardView para un diseño más moderno) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/contenedor_campos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="24dp"
-        android:background="#E8F5E9"
-        android:orientation="vertical"
-        android:padding="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/subtitulo_crear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Campo 1: Nombre -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre de Usuario:"
-            android:textColor="#3E2723"/>
-        <EditText
-            android:id="@+id/reg_nombre"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#F3A683"
-            android:hint="Ej. Ramiro"
-            android:inputType="textPersonName"
-            android:textColor="#3E2723" />
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <!-- Campo 2: Correo -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Correo Electrónico:"
-            android:textColor="#3E2723"
-            android:layout_marginTop="12dp"/>
-        <EditText
-            android:id="@+id/reg_correo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3A683"
-            android:hint="ejemplo@gmail.com"
-            android:inputType="textEmailAddress"
-            android:textColor="#3E2723" />
+            <!-- Campo 1: Nombre -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de Usuario:"
+                android:textStyle="bold"
+                android:textColor="#795548"/>
+            <EditText
+                android:id="@+id/reg_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3A683"
+                android:hint="Ej. Ramiro"
+                android:textColorHint="#BCAAA4"
+                android:inputType="textPersonName"
+                android:textColor="#3E2723"
+                android:paddingVertical="8dp"/>
 
-        <!-- Campo 3: Teléfono -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Teléfono:"
-            android:textColor="#3E2723"
-            android:layout_marginTop="12dp"/>
-        <EditText
-            android:id="@+id/reg_telefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3A683"
-            android:hint="64187898"
-            android:inputType="phone"
-            android:textColor="#3E2723" />
+            <!-- Campo 2: Correo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correo Electrónico:"
+                android:textStyle="bold"
+                android:textColor="#795548"
+                android:layout_marginTop="12dp"/>
+            <EditText
+                android:id="@+id/reg_correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3A683"
+                android:hint="ejemplo@gmail.com"
+                android:textColorHint="#BCAAA4"
+                android:inputType="textEmailAddress"
+                android:textColor="#3E2723"
+                android:paddingVertical="8dp"/>
 
-        <!-- Campo 4: Contraseña -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contraseña:"
-            android:textColor="#3E2723"
-            android:layout_marginTop="12dp"/>
-        <EditText
-            android:id="@+id/reg_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3A683"
-            android:hint="1234567"
-            android:inputType="textPassword"
-            android:textColor="#3E2723" />
+            <!-- Campo 3: Teléfono -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Teléfono:"
+                android:textStyle="bold"
+                android:textColor="#795548"
+                android:layout_marginTop="12dp"/>
+            <EditText
+                android:id="@+id/reg_telefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3A683"
+                android:hint="64187898"
+                android:textColorHint="#BCAAA4"
+                android:inputType="phone"
+                android:textColor="#3E2723"
+                android:paddingVertical="8dp"/>
 
-        <!-- Campo 5: Confirmar Contraseña -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmar Contraseña:"
-            android:textColor="#3E2723"
-            android:layout_marginTop="12dp"/>
-        <EditText
-            android:id="@+id/reg_pass_conf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3A683"
-            android:hint="1234567"
-            android:inputType="textPassword"
-            android:textColor="#3E2723" />
+            <!-- Campo 4: Contraseña -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña:"
+                android:textStyle="bold"
+                android:textColor="#795548"
+                android:layout_marginTop="12dp"/>
+            <EditText
+                android:id="@+id/reg_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3A683"
+                android:hint="•••••••"
+                android:textColorHint="#BCAAA4"
+                android:inputType="textPassword"
+                android:textColor="#3E2723"
+                android:paddingVertical="8dp"/>
 
-        <!-- Botón Registrarse (Dentro del cuadro verde) -->
-        <Button
-            android:id="@+id/btn_registrar_final"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="#F5E6CC"
-            android:text="Registrarse"
-            android:textColor="#3E2723"
-            android:textAllCaps="false"
-            android:onClick="completarRegistro"/>
-    </LinearLayout>
+            <!-- Campo 5: Confirmar Contraseña -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmar Contraseña:"
+                android:textStyle="bold"
+                android:textColor="#795548"
+                android:layout_marginTop="12dp"/>
+            <EditText
+                android:id="@+id/reg_pass_conf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3A683"
+                android:hint="•••••••"
+                android:textColorHint="#BCAAA4"
+                android:inputType="textPassword"
+                android:textColor="#3E2723"
+                android:paddingVertical="8dp"/>
+
+            <!-- Botón Registrarse -->
+            <Button
+                android:id="@+id/btn_registrar_final"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#5D4037"
+                android:text="Registrarse"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:onClick="completarRegistro"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- Texto de Iniciar Sesión (Abajo) -->
     <TextView
@@ -162,9 +189,13 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginBottom="32dp"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"
         android:onClick="volverLogin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contenedor_campos"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

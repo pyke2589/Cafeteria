@@ -59,11 +59,30 @@ public class DetalleCafeteriaFragment extends Fragment {
         EditText inputComentario = view.findViewById(R.id.input_nuevo_comentario);
         Button btnEnviar = view.findViewById(R.id.btn_enviar_comentario);
 
+        // ELEMENTOS UI (Añadimos el banner)
+        ImageView imgBanner = view.findViewById(R.id.img_banner_cafe);
+
         // CONFIGURAR DATOS
-        tvNombre.setText(cafe.getNombre());
+
+        tvNombre.setText(cafe.getNombre());          // ¡Añade esta línea!
         tvDireccion.setText(cafe.getDireccion());
-        tvDescripcion.setText("Categoría: " + cafe.getCategoria() + "\nLikes: ❤️ " + cafe.getTotal_likes() +
-                "\n\nUn excelente lugar para disfrutar de un buen ambiente. \n\nUbicación:\nLatitud: " + cafe.getLatitud() + "\nLongitud: " + cafe.getLongitud());
+
+        if (cafe.getImagen() != null && !cafe.getImagen().isEmpty()) {
+            com.bumptech.glide.Glide.with(getContext())
+                    .load(cafe.getImagen())
+                    .centerCrop()
+                    .into(imgBanner);
+        }
+
+        // Armamos la descripción con los nuevos datos del Excel
+        String detallesCompletos =
+                "🏪 Tipo: " + cafe.getTipo() + " (" + cafe.getCategoria() + ")\n" +
+                        "🕒 Horario: " + cafe.getHorario() + "\n" +
+                        "🏷️ Marcas de café: " + cafe.getMarcas() + "\n\n" +
+                        "☕ Sobre el Café:\n" + cafe.getDescripcion() + "\n\n" +
+                        "📍 Ubicación exacta:\nLatitud: " + cafe.getLatitud() + "\nLongitud: " + cafe.getLongitud();
+
+        tvDescripcion.setText(detallesCompletos);
 
         // CONFIGURAR RECYCLER COMENTARIOS
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -97,6 +116,41 @@ public class DetalleCafeteriaFragment extends Fragment {
             tabInfo.setBackgroundTintList(ColorStateList.valueOf(colorInactivo));
             tabInfo.setTextColor(Color.parseColor("#5D4037"));
         });
+        
+        // CONFIGURAR BOTÓN FAVORITO (Corazón)
+        ImageView btnFavorito = view.findViewById(R.id.btn_favorito_detalle);
+        String uid = FirebaseAuth.getInstance().getCurrentUser() != null ? 
+                     FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+                     
+        if (uid != null) {
+            // Verificar si ya es favorito al cargar
+            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
+                .get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        btnFavorito.setColorFilter(Color.RED); // Está en favoritos
+                    } else {
+                        btnFavorito.setColorFilter(Color.parseColor("#BCAAA4")); // No está en favoritos
+                    }
+                });
+
+            // Acción al hacer clic en el corazón
+            btnFavorito.setOnClickListener(v -> {
+                db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
+                    .get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Ya era favorito -> Lo quitamos
+                            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).delete();
+                            btnFavorito.setColorFilter(Color.parseColor("#BCAAA4"));
+                            Toast.makeText(getContext(), "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // No era favorito -> Lo agregamos
+                            db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).set(cafe);
+                            btnFavorito.setColorFilter(Color.RED);
+                            Toast.makeText(getContext(), "Agregado a favoritos", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            });
+        }
 
         // CARGAR COMENTARIOS
         cargarComentarios();
@@ -106,9 +160,10 @@ public class DetalleCafeteriaFragment extends Fragment {
             String texto = inputComentario.getText().toString().trim();
             if (texto.isEmpty()) return;
 
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String userId = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+            if (userId == null) return;
 
-            db.collection("Usuarios").document(uid).get().addOnSuccessListener(documentSnapshot -> {
+            db.collection("Usuarios").document(userId).get().addOnSuccessListener(documentSnapshot -> {
                 String nombreAutor = documentSnapshot.getString("nombre_completo");
                 if (nombreAutor == null) nombreAutor = "Usuario";
 
@@ -118,7 +173,7 @@ public class DetalleCafeteriaFragment extends Fragment {
 
                 // 2. Guardamos una copia para tu Perfil (Autor = Nombre de la Cafetería)
                 ComentarioModelo comentPerfil = new ComentarioModelo("☕ En: " + cafe.getNombre(), texto);
-                db.collection("Usuarios").document(uid).collection("MisComentarios").add(comentPerfil);
+                db.collection("Usuarios").document(userId).collection("MisComentarios").add(comentPerfil);
 
                 inputComentario.setText("");
                 Toast.makeText(getContext(), "Comentario enviado", Toast.LENGTH_SHORT).show();

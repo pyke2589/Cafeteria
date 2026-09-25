@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
+        // TRUCO TEMPORAL: Ejecutar la subida de datos al abrir la app
+        //CargadorDatos.subir(this);
+
         // 2. Conectamos con los IDs exactos de tu activity_main.xml
         cajaCorreo = findViewById(R.id.input_correo);
         cajaPass = findViewById(R.id.input_contrasena);

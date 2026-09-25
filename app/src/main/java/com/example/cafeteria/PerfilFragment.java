@@ -56,6 +56,7 @@ public class PerfilFragment extends Fragment {
         RecyclerView recyclerFavs = view.findViewById(R.id.recycler_perfil_favoritos);
         RecyclerView recyclerComent = view.findViewById(R.id.recycler_perfil_comentarios);
         ImageView btnCerrarSesion = view.findViewById(R.id.btn_cerrar_sesion);
+        ImageView btnVolver = view.findViewById(R.id.btn_volver_perfil);
 
         // 1. DATOS DEL USUARIO
         db.collection("Usuarios").document(uid).get().addOnSuccessListener(document -> {
@@ -144,6 +145,18 @@ public class PerfilFragment extends Fragment {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
             if (getActivity() != null) getActivity().finish();
+        });
+
+        // 8. BOTÓN VOLVER
+        btnVolver.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                View btnMapa = getActivity().findViewById(R.id.Layoutdos);
+                if (btnMapa != null) {
+                    btnMapa.performClick();
+                } else {
+                    getActivity().onBackPressed();
+                }
+            }
         });
 
         return view;

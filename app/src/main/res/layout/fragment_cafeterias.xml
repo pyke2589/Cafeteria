@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- BOTÓN VOLVER (Izquierda) -->
     <ImageView
         android:id="@+id/btn_volver_cafeterias"
         android:layout_width="40dp"
@@ -28,6 +29,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_superior_cafe"/>
 
+    <!-- NUEVO BOTÓN MENÚ DE FILTROS (Derecha) -->
+    <ImageView
+        android:id="@+id/btn_menu_filtro"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@android:drawable/ic_menu_sort_by_size"
+        android:backgroundTint="#E3C9B8"
+        android:background="@drawable/fondo_redondeado_crema"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_superior_cafe"/>
+
+    <!-- TUS 3 BOTONES ORIGINALES -->
     <LinearLayout
         android:id="@+id/layout_categorias"
         android:layout_width="match_parent"
@@ -64,7 +80,6 @@
             android:textColor="#5D4037"/>
     </LinearLayout>
 
-    <!-- AQUÍ ESTÁ LA MAGIA: El RecyclerView que reemplaza al ScrollView estático -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_cafeterias"
         android:layout_width="match_parent"
