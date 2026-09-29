@@ -31,7 +31,7 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.View
         this.listaCafeterias = listaCafeterias;
         this.listener = listener;
 
-        // Escuchamos los favoritos del usuario en vivo
+        // Escuchamos los favoritos del usuario en vivo (Solo si está logueado)
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             FirebaseFirestore.getInstance().collection("Usuarios").document(uid).collection("Favoritos")
@@ -83,6 +83,15 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.View
 
         // Clic en el Corazón
         holder.btnCorazon.setOnClickListener(v -> {
+
+            // ==========================================
+            // ESCUDO: Verificamos si es invitado primero
+            // ==========================================
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                MensajesCoffee.mostrar(v.getContext(), "Inicia sesión para guardar favoritos ☕");
+                return; // Cortamos el código aquí para que no se rompa (crash)
+            }
+
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -90,7 +99,7 @@ public class CafeteriaAdapter extends RecyclerView.Adapter<CafeteriaAdapter.View
             if (!idFavoritos.contains(cafe.getId())) {
                 db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).set(cafe);
                 // MENSAJE PERSONALIZADO DE ÉXITO
-                MensajesCoffee.mostrar(v.getContext(), "Agregado a tus favoritos");
+                MensajesCoffee.mostrar(v.getContext(), "Agregado a tus favoritos ❤️");
             } else {
                 db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId()).delete();
                 // MENSAJE PERSONALIZADO DE ELIMINACIÓN

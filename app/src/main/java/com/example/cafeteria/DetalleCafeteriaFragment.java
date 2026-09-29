@@ -106,10 +106,16 @@ public class DetalleCafeteriaFragment extends Fragment {
             tabInfo.setTextColor(Color.parseColor("#5D4037"));
         });
 
+        // =========================================================
+        // LÓGICA DE FAVORITOS (USUARIO VS INVITADO)
+        // =========================================================
         ImageView btnFavorito = view.findViewById(R.id.btn_favorito_detalle);
-        String uid = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
 
-        if (uid != null) {
+        boolean esInvitado = FirebaseAuth.getInstance().getCurrentUser() == null;
+        String uid = esInvitado ? null : FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (!esInvitado) {
+            // Lógica normal para usuarios logueados
             db.collection("Usuarios").document(uid).collection("Favoritos").document(cafe.getId())
                     .get().addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
@@ -133,27 +139,38 @@ public class DetalleCafeteriaFragment extends Fragment {
                             }
                         });
             });
+        } else {
+            // Lógica para invitados
+            btnFavorito.setColorFilter(Color.parseColor("#BCAAA4"));
+            btnFavorito.setOnClickListener(v -> {
+                MensajesCoffee.mostrar(getContext(), "Inicia sesión para guardar favoritos ☕");
+            });
         }
 
+        // Cargamos los comentarios para todos (los invitados sí pueden leerlos)
         cargarComentarios();
 
+        // =========================================================
+        // LÓGICA DE COMENTARIOS (USUARIO VS INVITADO)
+        // =========================================================
         btnEnviar.setOnClickListener(v -> {
+            if (esInvitado) {
+                MensajesCoffee.mostrar(getContext(), "Inicia sesión para comentar ☕");
+                return; // Corta la ejecución, no envía el comentario
+            }
+
             String texto = inputComentario.getText().toString().trim();
             if (texto.isEmpty()) return;
 
-            String userId = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
-            if (userId == null) return;
-
-            db.collection("Usuarios").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            db.collection("Usuarios").document(uid).get().addOnSuccessListener(documentSnapshot -> {
                 String nombreAutor = documentSnapshot.getString("nombre_completo");
                 if (nombreAutor == null) nombreAutor = "Usuario";
 
-                // Le pasamos el userId y el id de la cafetería para que sepa de quién es
-                ComentarioModelo comentCafe = new ComentarioModelo(nombreAutor, texto, userId, cafe.getId());
+                ComentarioModelo comentCafe = new ComentarioModelo(nombreAutor, texto, uid, cafe.getId());
                 db.collection("Cafeterias").document(cafe.getId()).collection("Comentarios").add(comentCafe);
 
-                ComentarioModelo comentPerfil = new ComentarioModelo("☕ En: " + cafe.getNombre(), texto, userId, cafe.getId());
-                db.collection("Usuarios").document(userId).collection("MisComentarios").add(comentPerfil);
+                ComentarioModelo comentPerfil = new ComentarioModelo("☕ En: " + cafe.getNombre(), texto, uid, cafe.getId());
+                db.collection("Usuarios").document(uid).collection("MisComentarios").add(comentPerfil);
 
                 inputComentario.setText("");
                 MensajesCoffee.mostrar(getContext(), "¡Comentario enviado!");
@@ -171,7 +188,7 @@ public class DetalleCafeteriaFragment extends Fragment {
                         listaComentarios.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             ComentarioModelo coment = doc.toObject(ComentarioModelo.class);
-                            coment.setIdComentario(doc.getId()); // Guardamos el ID del documento
+                            coment.setIdComentario(doc.getId());
                             listaComentarios.add(coment);
                         }
                         adapter.notifyDataSetChanged();

@@ -93,18 +93,18 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Botón Iniciar Sesión (Limpiado y usando Estilos) -->
+    <!-- Botón Iniciar Sesión -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_ingresar"
         style="@style/EstiloBotonPrincipal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:onClick="ingresarApp"
         android:text="@string/btn_iniciar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_input_contrasena" />
 
-    <!-- Botón Crear Cuenta (Limpiado y usando Estilos) -->
+    <!-- Botón Crear Cuenta -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_crear_cuenta"
         style="@style/EstiloBotonPrincipal"
@@ -114,5 +114,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_ingresar" />
+
+    <!-- NUEVO: Texto para Continuar como Invitado -->
+    <TextView
+        android:id="@+id/txt_invitado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Continuar como invitado >"
+        android:textColor="@color/crema_fondo"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="ingresarComoInvitado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_crear_cuenta" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

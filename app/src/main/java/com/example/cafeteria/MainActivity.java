@@ -27,7 +27,15 @@ public class MainActivity extends AppCompatActivity {
         // 1. Inicializamos Firebase y la Autenticación
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-        //CargadorDatos.subir(this);
+
+        // Opcional: Si quieres que el usuario entre directo sin ver el login si ya tiene sesión iniciada,
+        // puedes descomentar estas líneas:
+        /*
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(MainActivity.this, Pantalla2.class));
+            finish();
+        }
+        */
 
         // 2. Conectamos con los IDs exactos de tu activity_main.xml
         cajaCorreo = findViewById(R.id.input_correo);
@@ -77,5 +85,21 @@ public class MainActivity extends AppCompatActivity {
     public void crearCuenta(View view) {
         Intent intent = new Intent(this, RegistroActivity.class);
         startActivity(intent);
+    }
+
+    // ==========================================
+    // NUEVO: Método para "Continuar como Invitado"
+    // ==========================================
+    public void ingresarComoInvitado(View view) {
+        // Cerramos cualquier sesión fantasma que haya quedado abierta por error
+        if (mAuth.getCurrentUser() != null) {
+            mAuth.signOut();
+        }
+
+        // Mandamos al usuario directo a la pantalla principal
+        MensajesCoffee.mostrar(MainActivity.this, "Entrando como invitado ☕");
+        Intent intent = new Intent(MainActivity.this, Pantalla2.class);
+        startActivity(intent);
+        finish();
     }
 }

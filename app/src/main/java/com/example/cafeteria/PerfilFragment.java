@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,8 +43,8 @@ public class PerfilFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        if (mAuth.getCurrentUser() == null) return view;
-        uid = mAuth.getCurrentUser().getUid();
+        // 1. Verificamos si es invitado o usuario normal
+        boolean esInvitado = mAuth.getCurrentUser() == null;
 
         TextView tvNombre = view.findViewById(R.id.txt_perfil_nombre);
         TextView tvCorreo = view.findViewById(R.id.txt_perfil_correo);
@@ -55,82 +56,121 @@ public class PerfilFragment extends Fragment {
         RecyclerView recyclerComent = view.findViewById(R.id.recycler_perfil_comentarios);
         ImageView btnCerrarSesion = view.findViewById(R.id.btn_cerrar_sesion);
         ImageView btnVolver = view.findViewById(R.id.btn_volver_perfil);
+        LinearLayout layoutTabs = view.findViewById(R.id.layout_tabs_perfil);
 
-        db.collection("Usuarios").document(uid).get().addOnSuccessListener(document -> {
-            if (document.exists()) {
-                tvNombre.setText(document.getString("nombre_completo"));
-                tvCorreo.setText(document.getString("correo"));
-                tvTelefono.setText("Teléfono: " + document.getString("telefono"));
-            }
-        });
+        if (esInvitado) {
+            // ==========================================
+            // MODO INVITADO
+            // ==========================================
+            tvNombre.setText("¡Hola, Invitado!");
+            tvCorreo.setText("Regístrate para guardar tus cafeterías favoritas.");
+            tvTelefono.setText("Toca aquí para iniciar sesión");
 
-        recyclerFavs.setLayoutManager(new LinearLayoutManager(getContext()));
-        listaFavoritos = new ArrayList<>();
-        adapterFavoritos = new CafeteriaAdapter(listaFavoritos, cafe -> {
-            Fragment detalleFragment = new DetalleCafeteriaFragment(cafe);
-            if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.contenedor_principal, detalleFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        recyclerFavs.setAdapter(adapterFavoritos);
+            // Hacemos que al tocar el texto del teléfono, lo mande al Login
+            tvTelefono.setTextColor(Color.WHITE);
+            tvTelefono.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+                if (getActivity() != null) getActivity().finish();
+            });
 
-        recyclerComent.setLayoutManager(new LinearLayoutManager(getContext()));
-        listaComentarios = new ArrayList<>();
-        adapterComentarios = new ComentarioAdapter(listaComentarios, true); // TRUE indica que estamos en el Perfil
-        recyclerComent.setAdapter(adapterComentarios);
-
-        db.collection("Usuarios").document(uid).collection("Favoritos")
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) return;
-                    if (value != null) {
-                        listaFavoritos.clear();
-                        for (QueryDocumentSnapshot doc : value) {
-                            CafeteriaModelo cafe = doc.toObject(CafeteriaModelo.class);
-                            cafe.setId(doc.getId());
-                            listaFavoritos.add(cafe);
-                        }
-                        adapterFavoritos.notifyDataSetChanged();
-                    }
-                });
-
-        db.collection("Usuarios").document(uid).collection("MisComentarios")
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) return;
-                    if (value != null) {
-                        listaComentarios.clear();
-                        for (QueryDocumentSnapshot doc : value) {
-                            ComentarioModelo coment = doc.toObject(ComentarioModelo.class);
-                            coment.setIdComentario(doc.getId()); // Guardamos el ID del documento
-                            listaComentarios.add(coment);
-                        }
-                        adapterComentarios.notifyDataSetChanged();
-                    }
-                });
-
-        int colorActivo = Color.parseColor("#8D6E63");
-        int colorInactivo = Color.parseColor("#D7CCC8");
-
-        tabFavs.setOnClickListener(v -> {
-            recyclerFavs.setVisibility(View.VISIBLE);
-            recyclerComent.setVisibility(View.GONE);
-            tabFavs.setBackgroundTintList(ColorStateList.valueOf(colorActivo));
-            tabFavs.setTextColor(Color.WHITE);
-            tabComent.setBackgroundTintList(ColorStateList.valueOf(colorInactivo));
-            tabComent.setTextColor(Color.parseColor("#5D4037"));
-        });
-
-        tabComent.setOnClickListener(v -> {
+            // Ocultamos las listas, las pestañas y el botón de cerrar sesión porque es invitado
+            if (layoutTabs != null) layoutTabs.setVisibility(View.GONE);
             recyclerFavs.setVisibility(View.GONE);
-            recyclerComent.setVisibility(View.VISIBLE);
-            tabComent.setBackgroundTintList(ColorStateList.valueOf(colorActivo));
-            tabComent.setTextColor(Color.WHITE);
-            tabFavs.setBackgroundTintList(ColorStateList.valueOf(colorInactivo));
-            tabFavs.setTextColor(Color.parseColor("#5D4037"));
-        });
+            recyclerComent.setVisibility(View.GONE);
+            btnCerrarSesion.setVisibility(View.GONE);
 
+        } else {
+            // ==========================================
+            // MODO USUARIO LOGUEADO
+            // ==========================================
+            uid = mAuth.getCurrentUser().getUid();
+
+            // Cargar datos personales
+            db.collection("Usuarios").document(uid).get().addOnSuccessListener(document -> {
+                if (document.exists()) {
+                    tvNombre.setText(document.getString("nombre_completo"));
+                    tvCorreo.setText(document.getString("correo"));
+                    tvTelefono.setText("Teléfono: " + document.getString("telefono"));
+                }
+            });
+
+            // Configurar Recycler de Favoritos
+            recyclerFavs.setLayoutManager(new LinearLayoutManager(getContext()));
+            listaFavoritos = new ArrayList<>();
+            adapterFavoritos = new CafeteriaAdapter(listaFavoritos, cafe -> {
+                Fragment detalleFragment = new DetalleCafeteriaFragment(cafe);
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.contenedor_principal, detalleFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
+            recyclerFavs.setAdapter(adapterFavoritos);
+
+            // Configurar Recycler de Comentarios
+            recyclerComent.setLayoutManager(new LinearLayoutManager(getContext()));
+            listaComentarios = new ArrayList<>();
+            adapterComentarios = new ComentarioAdapter(listaComentarios, true); // TRUE indica que estamos en el Perfil
+            recyclerComent.setAdapter(adapterComentarios);
+
+            // Cargar Favoritos de Firebase
+            db.collection("Usuarios").document(uid).collection("Favoritos")
+                    .addSnapshotListener((value, error) -> {
+                        if (error != null) return;
+                        if (value != null) {
+                            listaFavoritos.clear();
+                            for (QueryDocumentSnapshot doc : value) {
+                                CafeteriaModelo cafe = doc.toObject(CafeteriaModelo.class);
+                                cafe.setId(doc.getId());
+                                listaFavoritos.add(cafe);
+                            }
+                            adapterFavoritos.notifyDataSetChanged();
+                        }
+                    });
+
+            // Cargar Comentarios de Firebase
+            db.collection("Usuarios").document(uid).collection("MisComentarios")
+                    .addSnapshotListener((value, error) -> {
+                        if (error != null) return;
+                        if (value != null) {
+                            listaComentarios.clear();
+                            for (QueryDocumentSnapshot doc : value) {
+                                ComentarioModelo coment = doc.toObject(ComentarioModelo.class);
+                                coment.setIdComentario(doc.getId());
+                                listaComentarios.add(coment);
+                            }
+                            adapterComentarios.notifyDataSetChanged();
+                        }
+                    });
+
+            // Configurar la lógica de las Pestañas (Tabs)
+            int colorActivo = Color.parseColor("#8D6E63");
+            int colorInactivo = Color.parseColor("#D7CCC8");
+
+            tabFavs.setOnClickListener(v -> {
+                recyclerFavs.setVisibility(View.VISIBLE);
+                recyclerComent.setVisibility(View.GONE);
+                tabFavs.setBackgroundTintList(ColorStateList.valueOf(colorActivo));
+                tabFavs.setTextColor(Color.WHITE);
+                tabComent.setBackgroundTintList(ColorStateList.valueOf(colorInactivo));
+                tabComent.setTextColor(Color.parseColor("#5D4037"));
+            });
+
+            tabComent.setOnClickListener(v -> {
+                recyclerFavs.setVisibility(View.GONE);
+                recyclerComent.setVisibility(View.VISIBLE);
+                tabComent.setBackgroundTintList(ColorStateList.valueOf(colorActivo));
+                tabComent.setTextColor(Color.WHITE);
+                tabFavs.setBackgroundTintList(ColorStateList.valueOf(colorInactivo));
+                tabFavs.setTextColor(Color.parseColor("#5D4037"));
+            });
+        }
+
+        // ==========================================
+        // BOTONES SUPERIORES
+        // ==========================================
         btnCerrarSesion.setOnClickListener(v -> {
             mAuth.signOut();
             MensajesCoffee.mostrar(getContext(), "Sesión cerrada");
