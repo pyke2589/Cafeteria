@@ -4,17 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/crema_fondo"> <!-- Fondo crema aplicado -->
+    android:background="@color/crema_fondo">
 
-    <!-- Botón volver atrás superior izquierdo -->
+    <!-- Botón volver atrás superior izquierdo (Usando Estilo) -->
     <ImageButton
         android:id="@+id/btn_volver_superior"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/EstiloIconoBoton"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@android:drawable/ic_menu_revert"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="volverLogin"
         android:contentDescription="Volver atrás"
         android:scaleType="centerInside"
@@ -48,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titulo_coffeespot" />
 
-    <!-- Recuadro para los campos (CardView para un diseño más moderno) -->
+    <!-- Recuadro para los campos (CardView) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/contenedor_campos"
         android:layout_width="match_parent"
@@ -70,106 +68,63 @@
 
             <!-- Campo 1: Nombre -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre de Usuario:"
-                android:textStyle="bold"
-                android:textColor="@color/cafe_claro_texto"/>
+                style="@style/EstiloEtiquetaFormulario"
+                android:layout_marginTop="0dp"
+                android:text="Nombre de Usuario:" />
             <EditText
                 android:id="@+id/reg_nombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/cafe_suave"
+                style="@style/EstiloInputFormulario"
                 android:hint="Ej. Ramiro"
-                android:textColorHint="@color/cafe_suave"
-                android:inputType="textPersonName"
-                android:textColor="@color/cafe_oscuro_texto"
-                android:paddingVertical="8dp"/>
+                android:inputType="textPersonName" />
 
             <!-- Campo 2: Correo -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Correo Electrónico:"
-                android:textStyle="bold"
-                android:textColor="@color/cafe_claro_texto"
-                android:layout_marginTop="12dp"/>
+                style="@style/EstiloEtiquetaFormulario"
+                android:text="Correo Electrónico:" />
             <EditText
                 android:id="@+id/reg_correo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/cafe_suave"
+                style="@style/EstiloInputFormulario"
                 android:hint="@string/hint_correo"
-                android:textColorHint="@color/cafe_suave"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/cafe_oscuro_texto"
-                android:paddingVertical="8dp"/>
+                android:inputType="textEmailAddress" />
 
             <!-- Campo 3: Teléfono -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Teléfono:"
-                android:textStyle="bold"
-                android:textColor="@color/cafe_claro_texto"
-                android:layout_marginTop="12dp"/>
+                style="@style/EstiloEtiquetaFormulario"
+                android:text="Teléfono:" />
             <EditText
                 android:id="@+id/reg_telefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/cafe_suave"
+                style="@style/EstiloInputFormulario"
                 android:hint="64187898"
-                android:textColorHint="@color/cafe_suave"
-                android:inputType="phone"
-                android:textColor="@color/cafe_oscuro_texto"
-                android:paddingVertical="8dp"/>
+                android:inputType="phone" />
 
             <!-- Campo 4: Contraseña -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contraseña:"
-                android:textStyle="bold"
-                android:textColor="@color/cafe_claro_texto"
-                android:layout_marginTop="12dp"/>
+                style="@style/EstiloEtiquetaFormulario"
+                android:text="Contraseña:" />
             <EditText
                 android:id="@+id/reg_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/cafe_suave"
+                style="@style/EstiloInputFormulario"
                 android:hint="@string/hint_contrasena"
-                android:textColorHint="@color/cafe_suave"
-                android:inputType="textPassword"
-                android:textColor="@color/cafe_oscuro_texto"
-                android:paddingVertical="8dp"/>
+                android:inputType="textPassword" />
 
             <!-- Campo 5: Confirmar Contraseña -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirmar Contraseña:"
-                android:textStyle="bold"
-                android:textColor="@color/cafe_claro_texto"
-                android:layout_marginTop="12dp"/>
+                style="@style/EstiloEtiquetaFormulario"
+                android:text="Confirmar Contraseña:" />
             <EditText
                 android:id="@+id/reg_pass_conf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/cafe_suave"
+                style="@style/EstiloInputFormulario"
                 android:hint="@string/hint_contrasena"
-                android:textColorHint="@color/cafe_suave"
-                android:inputType="textPassword"
-                android:textColor="@color/cafe_oscuro_texto"
-                android:paddingVertical="8dp"/>
+                android:inputType="textPassword" />
 
-            <!-- Botón Registrarse (¡Ahora usa el estilo centralizado!) -->
-            <Button
+            <!-- Botón Registrarse (Usando Estilo Centralizado) -->
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_registrar_final"
-                style="@style/EstiloBotonCafe"
+                style="@style/EstiloBotonPrincipal"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
-                android:text="Registrarse"
-                android:onClick="completarRegistro"/>
+                android:onClick="completarRegistro"
+                android:text="Registrarse" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -186,6 +141,7 @@
         android:layout_marginTop="24dp"
         android:padding="8dp"
         android:onClick="volverLogin"
+        android:background="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

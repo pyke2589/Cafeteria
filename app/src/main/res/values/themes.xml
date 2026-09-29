@@ -1,18 +1,497 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme (No borres tu tema base si ya tienes uno, suele llamarse Theme.Cafeteria) -->
     <style name="Base.Theme.Cafeteria" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Puedes mantener tus colores primarios aquí si los tienes -->
     </style>
 
     <style name="Theme.Cafeteria" parent="Base.Theme.Cafeteria" />
-    <!-- ESTILO PARA LOS BOTONES DE COFFEESPOT -->
-    <style name="EstiloBotonCafe" parent="Widget.AppCompat.Button">
+
+    <!-- ========================================================= -->
+    <!-- 1. BOTONES PRINCIPALES (Login, Registro, Pantalla Secreta)-->
+    <!-- ========================================================= -->
+    <style name="EstiloBotonPrincipal" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/crema_fondo</item>
+        <item name="android:textColor">@color/cafe_oscuro_texto</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingHorizontal">40dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <!-- Estilo para el botón de la Pantalla de Creadores -->
+    <style name="EstiloBotonCafe" parent="EstiloBotonPrincipal">
+        <item name="backgroundTint">@color/cafe_suave</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 2. BOTONES PEQUEÑOS Y DE LISTAS (Información, Enviar)     -->
+    <!-- ========================================================= -->
+    <style name="EstiloBotonAccion" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
         <item name="backgroundTint">@color/crema_boton</item>
         <item name="android:textColor">@color/cafe_oscuro_texto</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">200dp</item>
-        <item name="android:layout_height">55dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:elevation">2dp</item>
     </style>
+
+    <!-- ========================================================= -->
+    <!-- 3. BOTONES DE FILTROS SUPERIORES (Cerca, Populares, Abierto) -->
+    <!-- ========================================================= -->
+    <style name="EstiloBotonFiltro" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/crema_boton</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 4. PESTAÑAS (Tabs de Información/Comentarios y Favoritos) -->
+    <!-- ========================================================= -->
+    <style name="EstiloPestana">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:paddingVertical">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 5. ICONOS CLICKEABLES (Volver, Menú Hamburguesa, Salir)   -->
+    <!-- ========================================================= -->
+    <style name="EstiloIconoBoton">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <!-- Esto hace que el fondo sea transparente pero tenga el efecto de onda al tocar -->
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 6. TEXTOS DEL MENÚ DE NAVEGACIÓN INFERIOR                 -->
+    <!-- ========================================================= -->
+    <style name="EstiloTextoMenuNavegacion">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 7. BARRA DE NAVEGACIÓN INFERIOR (Pantalla2)               -->
+    <!-- ========================================================= -->
+
+    <!-- Contenedor principal de la barra -->
+    <style name="EstiloBarraNavegacion">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dp</item>
+        <!-- Reemplacé tu #D2B48C hardcodeado por la variable de tu paleta -->
+        <item name="android:background">@color/cafe_suave</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">3</item>
+    </style>
+
+    <!-- Contenedor de cada pestaña (Botón invisible) -->
+    <style name="EstiloContenedorTabNav">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <!-- Añade un efecto visual nativo de "onda" al tocar el botón -->
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- Tamaño de los íconos del menú -->
+    <style name="EstiloIconoNav">
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 8. FORMULARIOS Y CAJAS DE TEXTO (Registro/Edición)        -->
+    <!-- ========================================================= -->
+
+    <!-- Para las etiquetas ("Nombre de Usuario:", "Correo:", etc.) -->
+    <style name="EstiloEtiquetaFormulario">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+        <item name="android:layout_marginTop">12dp</item>
+    </style>
+
+    <!-- Para las cajas donde el usuario escribe -->
+    <style name="EstiloInputFormulario">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/cafe_suave</item>
+        <item name="android:textColorHint">@color/cafe_suave</item>
+        <item name="android:textColor">@color/cafe_oscuro_texto</item>
+        <item name="android:paddingVertical">8dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 9. DIÁLOGOS PERSONALIZADOS Y MENÚS FLOTANTES              -->
+    <!-- ========================================================= -->
+
+    <!-- Contenedor general del diálogo (Fondo y espaciado) -->
+    <style name="EstiloContenedorDialogo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/crema_fondo</item>
+        <item name="android:padding">24dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Título principal del diálogo -->
+    <style name="EstiloTituloDialogo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/cafe_oscuro_texto</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <!-- Opciones clickeables de la lista -->
+    <style name="EstiloOpcionDialogo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/cafe_oscuro_texto</item>
+    </style>
+
+    <!-- Líneas separadoras entre opciones -->
+    <style name="EstiloDivisorDialogo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/cafe_suave</item>
+        <item name="android:layout_marginVertical">8dp</item>
+    </style>
+
+
+    <!-- ========================================================= -->
+    <!-- 10. MENSAJES FLOTANTES PERSONALIZADOS (Toasts)            -->
+    <!-- ========================================================= -->
+
+    <!-- Contenedor principal del mensaje (Pastilla oscura flotante) -->
+    <style name="EstiloContenedorToast">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <!-- Invierte el color para que destaque sobre el fondo claro -->
+        <item name="backgroundTint">@color/cafe_oscuro_texto</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <!-- Ícono en miniatura dentro del mensaje -->
+    <style name="EstiloIconoToast">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+    </style>
+
+    <!-- Texto claro que resalta sobre el fondo oscuro -->
+    <style name="EstiloTextoToast">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/crema_fondo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 11. VARIANTES PARA LA PANTALLA DE CAFETERÍAS              -->
+    <!-- ========================================================= -->
+
+    <!-- Variante ACTIVA del botón de filtro (El que está seleccionado por defecto) -->
+    <style name="EstiloBotonFiltroActivo" parent="EstiloBotonFiltro">
+        <item name="backgroundTint">@color/cafe_suave</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- Ícono derecho redondeado con fondo crema (Filtro hamburguesa) -->
+    <style name="EstiloIconoAccionRedondeado">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/crema_boton</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 12. PANTALLA DE DETALLES (Header, Tarjetas y Comentarios) -->
+    <!-- ========================================================= -->
+
+    <!-- Encabezado oscuro superior -->
+    <style name="EstiloContenedorHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:background">@color/cafe_oscuro_texto</item>
+    </style>
+
+    <style name="EstiloTituloHeader">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="EstiloIconoHeaderBlanco">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <!-- Variantes de Pestañas Internas (Información vs Comentarios) -->
+    <style name="EstiloPestanaActiva">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/cafe_suave</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="EstiloPestanaInactiva" parent="EstiloPestanaActiva">
+        <item name="backgroundTint">@color/crema_boton</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+    </style>
+
+    <!-- Textos de la tarjeta de información -->
+    <style name="EstiloTituloDetalle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/cafe_oscuro_texto</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="EstiloSubtituloDetalle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">6dp</item>
+    </style>
+
+    <!-- Botón de Enviar Comentario -->
+    <style name="EstiloBotonEnviar" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/cafe_claro_texto</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:paddingHorizontal">24dp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 13. PANTALLA PRINCIPAL / DASHBOARD (Mapas y Listas)       -->
+    <!-- ========================================================= -->
+
+    <!-- Tarjeta central del Mapa -->
+    <style name="EstiloTarjetaMapa">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <!-- Títulos separadores de sección (Ej: "Recomendadas") -->
+    <style name="EstiloTituloSeccion">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Textos clickeables interactivos (Ej: "Ver todo >") -->
+    <style name="EstiloTextoClickeable">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/cafe_suave</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">8dp</item>
+        <!-- Le añadimos el efecto ripple transparente para que reaccione al toque -->
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 14. PANTALLA DE PERFIL DE USUARIO                         -->
+    <!-- ========================================================= -->
+
+    <!-- Contenedor del encabezado del perfil -->
+    <style name="EstiloHeaderPerfil">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/cafe_oscuro_texto</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">24dp</item>
+    </style>
+
+    <!-- Imagen circular del perfil -->
+    <style name="EstiloImagenPerfil">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">110dp</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/cafe_suave</item>
+        <item name="android:padding">24dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+    </style>
+
+    <!-- Nombre del usuario -->
+    <style name="EstiloTituloPerfil">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
+    <!-- Datos secundarios (Correo, Teléfono) -->
+    <style name="EstiloSubtituloPerfil">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/crema_fondo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <!-- Pestañas específicas del perfil (con sombra) -->
+    <style name="EstiloPestanaPerfilActiva">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/fondo_redondeado_crema</item>
+        <item name="backgroundTint">@color/cafe_suave</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:paddingVertical">10dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="EstiloPestanaPerfilInactiva" parent="EstiloPestanaPerfilActiva">
+        <item name="backgroundTint">@color/crema_boton</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 15. ELEMENTOS DE LISTA (Tarjetas de Cafeterías)           -->
+    <!-- ========================================================= -->
+
+    <!-- Tarjeta principal del ítem -->
+    <style name="EstiloTarjetaItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardBackgroundColor">@color/cafe_suave</item>
+    </style>
+
+    <!-- Tarjeta para la imagen de la cafetería -->
+    <style name="EstiloTarjetaImagenItem">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/crema_fondo</item>
+    </style>
+
+    <!-- Título de la cafetería en la lista -->
+    <style name="EstiloTituloItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Texto de cantidad de likes -->
+    <style name="EstiloTextoLikesItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- 16. ELEMENTOS DE LISTA (Tarjetas de Comentarios)          -->
+    <!-- ========================================================= -->
+
+    <!-- Tarjeta principal del comentario -->
+    <style name="EstiloTarjetaComentario">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_marginHorizontal">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <!-- Ícono pequeño de perfil junto al nombre -->
+    <style name="EstiloIconoMiniPerfil">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <!-- Nombre del autor (Resaltado) -->
+    <style name="EstiloAutorComentario">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/cafe_claro_texto</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Texto principal del comentario -->
+    <style name="EstiloTextoComentario">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <!-- El margen de 32dp alinea el texto con el nombre, saltándose el ícono -->
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:textColor">@color/cafe_oscuro_texto</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

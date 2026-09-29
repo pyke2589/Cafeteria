@@ -5,14 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/crema_fondo">
 
-    <!-- 1. MAPA EN CUADRITO ARRIBA (Con bordes redondeados) -->
+    <!-- 1. MAPA EN CUADRITO ARRIBA -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_mapa"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        style="@style/EstiloTarjetaMapa"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -26,28 +22,19 @@
     <!-- 2. TÍTULO DEL MEDIO -->
     <TextView
         android:id="@+id/txt_sugerencias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/EstiloTituloSeccion"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Recomendadas"
-        android:textColor="@color/cafe_claro_texto"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_mapa" />
 
-    <!-- 3. BOTÓN "VER TODO" (A LA DERECHA) -->
+    <!-- 3. BOTÓN "VER TODO" -->
     <TextView
         android:id="@+id/txt_ver_todo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/EstiloTextoClickeable"
         android:layout_marginEnd="16dp"
         android:text="Ver todo >"
-        android:textColor="@color/cafe_suave"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/txt_sugerencias"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txt_sugerencias" />

@@ -8,4 +8,8 @@
     <string name="hint_contrasena">..........</string>
     <string name="btn_iniciar">Iniciar Sesión</string>
     <string name="btn_crear">Crear Cuenta</string>
+    <string name="textgoomap">HUBUCACION</string>
+
+
+
 </resources>

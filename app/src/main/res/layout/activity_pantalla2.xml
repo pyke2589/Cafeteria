@@ -14,77 +14,54 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/Layoutuno" />
 
-     <LinearLayout
+    <!-- Barra de Navegación (Limpiada y usando Estilo) -->
+    <LinearLayout
         android:id="@+id/Layoutuno"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#D2B48C"
-        android:orientation="horizontal"
-        android:weightSum="3"
+        style="@style/EstiloBarraNavegacion"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Botón 1: Mapa -->
         <LinearLayout
             android:id="@+id/Layoutdos"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            style="@style/EstiloContenedorTabNav">
             <ImageView
                 android:id="@+id/IconoMap"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                style="@style/EstiloIconoNav"
                 android:src="@drawable/icono_google"/>
             <TextView
                 android:id="@+id/NombreMapa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ubicación"
-                android:textStyle="bold"/>
+                style="@style/EstiloTextoMenuNavegacion"
+                android:text="@string/textgoomap"/>
         </LinearLayout>
 
         <!-- Botón 2: Cafeterías -->
         <LinearLayout
             android:id="@+id/Layouttres"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            style="@style/EstiloContenedorTabNav">
             <ImageView
                 android:id="@+id/Iconocafeterias"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                style="@style/EstiloIconoNav"
                 android:src="@drawable/icono_cafe"/>
             <TextView
                 android:id="@+id/Nombrecafe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cafeterías"
-                android:textStyle="bold"/>
+                style="@style/EstiloTextoMenuNavegacion"
+                android:text="Cafeterías"/>
         </LinearLayout>
 
         <!-- Botón 3: Perfil -->
         <LinearLayout
             android:id="@+id/Layoutcuatro"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            style="@style/EstiloContenedorTabNav">
             <ImageView
                 android:id="@+id/Iconoperfil"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                style="@style/EstiloIconoNav"
                 android:src="@drawable/icono_perfil"/>
             <TextView
                 android:id="@+id/Nombreperfil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Perfil"
-                android:textStyle="bold"/>
+                style="@style/EstiloTextoMenuNavegacion"
+                android:text="Perfil"/>
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

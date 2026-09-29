@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,7 +69,7 @@ public class CafeteriasFragment extends Fragment {
         Button btnPopulares = view.findViewById(R.id.btn_populares);
         Button btnAbierto = view.findViewById(R.id.btn_abierto);
         ImageView btnVolver = view.findViewById(R.id.btn_volver_cafeterias);
-        ImageView btnFiltroMenu = view.findViewById(R.id.btn_menu_filtro); // El nuevo botón de 3 rayas
+        ImageView btnFiltroMenu = view.findViewById(R.id.btn_menu_filtro); // Botón de filtro (hamburguesa/líneas)
 
         int colorActivo = android.graphics.Color.parseColor("#8D6E63");
         int colorInactivo = android.graphics.Color.parseColor("#D7CCC8");
@@ -88,27 +88,55 @@ public class CafeteriasFragment extends Fragment {
             }
         });
 
-        // 2. NUEVO: Menú Desplegable (Hamburguesa)
+        // 2. NUEVO: Menú de Filtros Personalizado (Custom Dialog)
         btnFiltroMenu.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(getContext(), v);
-            popup.getMenu().add("Mostrar Ambas");
-            popup.getMenu().add("Solo Cafeterías");
-            popup.getMenu().add("Solo Tostadurías");
+            // Verificamos que el contexto no sea nulo antes de construir el diálogo
+            if (getContext() == null) return;
 
-            popup.setOnMenuItemClickListener(item -> {
-                String titulo = item.getTitle().toString();
-                if (titulo.equals("Mostrar Ambas")) {
-                    tipoActual = "Ambas";
-                } else if (titulo.equals("Solo Cafeterías")) {
-                    tipoActual = "Cafetería";
-                } else if (titulo.equals("Solo Tostadurías")) {
-                    tipoActual = "Tostaduría";
-                }
+            // Creamos el constructor del diálogo
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+
+            // Inflamos nuestro diseño redondeado
+            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_filtros, null);
+            builder.setView(dialogView);
+
+            // Creamos el diálogo
+            android.app.AlertDialog dialog = builder.create();
+
+            // Hacemos el fondo del sistema transparente para que se vean nuestras esquinas redondeadas
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+
+            // Buscamos los botones dentro del diseño del diálogo
+            TextView opcAmbas = dialogView.findViewById(R.id.opcion_ambas);
+            TextView opcCafeterias = dialogView.findViewById(R.id.opcion_cafeterias);
+            TextView opcTostadurias = dialogView.findViewById(R.id.opcion_tostadurias);
+
+            // Configuramos los clics
+            opcAmbas.setOnClickListener(v1 -> {
+                tipoActual = "Ambas";
                 Toast.makeText(getContext(), "Filtro: " + tipoActual, Toast.LENGTH_SHORT).show();
                 aplicarFiltrosCombinados();
-                return true;
+                dialog.dismiss(); // Cierra el menú flotante
             });
-            popup.show();
+
+            opcCafeterias.setOnClickListener(v1 -> {
+                tipoActual = "Cafetería";
+                Toast.makeText(getContext(), "Filtro: " + tipoActual, Toast.LENGTH_SHORT).show();
+                aplicarFiltrosCombinados();
+                dialog.dismiss();
+            });
+
+            opcTostadurias.setOnClickListener(v1 -> {
+                tipoActual = "Tostaduría";
+                Toast.makeText(getContext(), "Filtro: " + tipoActual, Toast.LENGTH_SHORT).show();
+                aplicarFiltrosCombinados();
+                dialog.dismiss();
+            });
+
+            // Mostramos el menú en pantalla
+            dialog.show();
         });
 
         // 3. Botón Cerca de ti

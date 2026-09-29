@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/EstiloContenedorDialogo">
+
+    <TextView
+        style="@style/EstiloTituloDialogo"
+        android:text="Filtrar Establecimientos" />
+
+    <!-- Opción 1: Ambas -->
+    <TextView
+        android:id="@+id/opcion_ambas"
+        style="@style/EstiloOpcionDialogo"
+        android:text="☕ Mostrar Ambas" />
+
+    <View style="@style/EstiloDivisorDialogo" />
+
+    <!-- Opción 2: Solo Cafeterías -->
+    <TextView
+        android:id="@+id/opcion_cafeterias"
+        style="@style/EstiloOpcionDialogo"
+        android:text="🏪 Solo Cafeterías" />
+
+    <View style="@style/EstiloDivisorDialogo" />
+
+    <!-- Opción 3: Solo Tostadurías -->
+    <TextView
+        android:id="@+id/opcion_tostadurias"
+        style="@style/EstiloOpcionDialogo"
+        android:text="🔥 Solo Tostadurías" />
+
+</LinearLayout>
